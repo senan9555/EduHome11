@@ -7464,11 +7464,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\99450\\Desktop\\Project\\EduHome\\EduHome\\EduHome.csproj",
+      "projectUniqueName": "C:\\Users\\99450\\Desktop\\EduHome11\\EduHome\\EduHome\\EduHome.csproj",
       "projectName": "EduHome",
-      "projectPath": "C:\\Users\\99450\\Desktop\\Project\\EduHome\\EduHome\\EduHome.csproj",
+      "projectPath": "C:\\Users\\99450\\Desktop\\EduHome11\\EduHome\\EduHome\\EduHome.csproj",
       "packagesPath": "C:\\Users\\99450\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\99450\\Desktop\\Project\\EduHome\\EduHome\\obj\\",
+      "outputPath": "C:\\Users\\99450\\Desktop\\EduHome11\\EduHome\\EduHome\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\99450\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EduHome.Areas.Admin.Controllers
@@ -23,7 +24,7 @@ namespace EduHome.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            List<Slider> sliders = await _db.Sliders.ToListAsync();
+            List<Slider> sliders = await _db.Sliders.Where(x=> !x.IsDeactive).ToListAsync();
             return View(sliders);
         }
         public IActionResult Create()
@@ -133,6 +134,37 @@ namespace EduHome.Areas.Admin.Controllers
                 return BadRequest();
             }
             return View(slider);
+        }
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Slider slider = await _db.Sliders.FirstOrDefaultAsync(x => x.Id == id);
+            if (slider == null)
+            {
+                return BadRequest();
+            }
+            return View(slider);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeletePost(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Slider slider = await _db.Sliders.FirstOrDefaultAsync(x => x.Id == id);
+            if (slider == null)
+            {
+                return BadRequest();
+            }
+            slider.IsDeactive = true;
+            await _db.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
 
     }

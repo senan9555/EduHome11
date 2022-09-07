@@ -26,7 +26,7 @@ namespace EduHome.Controllers
            
             HomeVM homeVM = new HomeVM
             {
-                Sliders = _db.Sliders.ToList(),
+                Sliders = _db.Sliders.Where(x => !x.IsDeactive).ToList(),
                 About = _db.Abouts.FirstOrDefault(),
                 Courses = _db.Courses.OrderByDescending(x => x.Id).Take(3).ToList(),
                 Services = _db.Services.Where(x => !x.IsDeactive).ToList(),
