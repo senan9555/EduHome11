@@ -22,15 +22,23 @@ namespace EduHome.Areas.Admin.Controllers
             _db=db;
             _env=env;
         }
+        #region Index
         public async Task<IActionResult> Index()
         {
-            List<Slider> sliders = await _db.Sliders.Where(x=> !x.IsDeactive).ToListAsync();
+            List<Slider> sliders = await _db.Sliders.Where(x => !x.IsDeactive).ToListAsync();
             return View(sliders);
         }
+        #endregion
+
+        #region Create
+
         public IActionResult Create()
         {
             return View();
         }
+        #endregion
+
+        #region Create Post
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -41,7 +49,7 @@ namespace EduHome.Areas.Admin.Controllers
             {
                 return View();
             }
-           
+
             if (slider.Photo == null)
             {
                 ModelState.AddModelError("Photo", "please select a photo");
@@ -58,27 +66,34 @@ namespace EduHome.Areas.Admin.Controllers
                 return View();
             }
             string folder = Path.Combine(_env.WebRootPath, "img", "slider");
-            slider.Image=await slider.Photo.SaveFileAsync(folder);
+            slider.Image = await slider.Photo.SaveFileAsync(folder);
             await _db.Sliders.AddAsync(slider);
             await _db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+        #endregion
+
+        #region Update
         public async Task<IActionResult> Update(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            Slider dbSlider = await _db.Sliders.FirstOrDefaultAsync(x=>x.Id==id);
+            Slider dbSlider = await _db.Sliders.FirstOrDefaultAsync(x => x.Id == id);
             if (dbSlider == null)
             {
                 return BadRequest();
             }
             return View(dbSlider);
         }
+        #endregion
+
+        #region Update Post
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Update(int? id,Slider slider)
+        public async Task<IActionResult> Update(int? id, Slider slider)
         {
             if (id == null)
             {
@@ -115,13 +130,17 @@ namespace EduHome.Areas.Admin.Controllers
                 }
                 dbSlider.Image = await slider.Photo.SaveFileAsync(folder);
             }
-            
+
             await _db.Sliders.AddAsync(slider);
-            dbSlider.Title=slider.Title;
-            dbSlider.SubTitle=slider.SubTitle;
+            dbSlider.Title = slider.Title;
+            dbSlider.SubTitle = slider.SubTitle;
             await _db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+        #endregion
+
+        #region Detail
+
         public async Task<IActionResult> Detail(int? id)
         {
             if (id == null)
@@ -135,6 +154,9 @@ namespace EduHome.Areas.Admin.Controllers
             }
             return View(slider);
         }
+        #endregion
+
+        #region Delete
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -148,6 +170,10 @@ namespace EduHome.Areas.Admin.Controllers
             }
             return View(slider);
         }
+        #endregion
+
+        #region Delete Post
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Delete")]
@@ -166,6 +192,7 @@ namespace EduHome.Areas.Admin.Controllers
             await _db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
+        #endregion
 
     }
 }
